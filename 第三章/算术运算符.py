@@ -1,0 +1,12 @@
+print("对不起" * 200)
+print("\n")
+print(("对" + "不" + "起") * 200)
+laopo = "对不起"
+print(laopo * 200)
+print(2 + 1)
+print(2 - 1)
+print(2 * 1)
+print(2 / 1)
+print(9 % 3)
+print(2 ** 100)
+print("-" * 100)
