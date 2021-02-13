@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<script src="/live2d-widget/autoload.js"></script>
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="分支结构应用场景迄今为止，我们写的Python代码都是一条一条语句顺序执行，这种代码结构通常称之为顺序结构。然而仅有顺序结构并不能解决所有的问题，比如我们设计一个游戏，游戏第一关的通关条件是玩家获得1000分，那么在完成本局游戏后，我们要根据玩家得到分数来决定究竟是进入第二关，还是告诉玩家“Game Over”，这里就会产生两个分支，而且这两个分支只有一个会被执行。类似的场景还有很多，我们将这种结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="i00lcyのblog">
+<meta property="og:url" content="http://example.com/2021/02/13/03.%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="i00lcyのblog">
+<meta property="og:description" content="分支结构应用场景迄今为止，我们写的Python代码都是一条一条语句顺序执行，这种代码结构通常称之为顺序结构。然而仅有顺序结构并不能解决所有的问题，比如我们设计一个游戏，游戏第一关的通关条件是玩家获得1000分，那么在完成本局游戏后，我们要根据玩家得到分数来决定究竟是进入第二关，还是告诉玩家“Game Over”，这里就会产生两个分支，而且这两个分支只有一个会被执行。类似的场景还有很多，我们将这种结">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/02/13/03.%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/res/formula_1.png">
+<meta property="article:published_time" content="2021-02-13T08:51:28.335Z">
+<meta property="article:modified_time" content="2020-12-24T04:04:10.000Z">
+<meta property="article:author" content="i0lcy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/02/13/03.%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/res/formula_1.png">
+
+
+<link rel="canonical" href="http://example.com/2021/02/13/03.%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title> | i00lcyのblog</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+<script src="/live2d-widget/autoload.js"></script>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">i00lcyのblog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">分支结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#if%E8%AF%AD%E5%8F%A5%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">if语句的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%83%E4%B9%A0"><span class="nav-number">1.3.</span> <span class="nav-text">练习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%83%E4%B9%A01%EF%BC%9A%E8%8B%B1%E5%88%B6%E5%8D%95%E4%BD%8D%E8%8B%B1%E5%AF%B8%E4%B8%8E%E5%85%AC%E5%88%B6%E5%8D%95%E4%BD%8D%E5%8E%98%E7%B1%B3%E4%BA%92%E6%8D%A2%E3%80%82"><span class="nav-number">1.3.1.</span> <span class="nav-text">练习1：英制单位英寸与公制单位厘米互换。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%83%E4%B9%A02%EF%BC%9A%E7%99%BE%E5%88%86%E5%88%B6%E6%88%90%E7%BB%A9%E8%BD%AC%E6%8D%A2%E4%B8%BA%E7%AD%89%E7%BA%A7%E5%88%B6%E6%88%90%E7%BB%A9%E3%80%82"><span class="nav-number">1.3.2.</span> <span class="nav-text">练习2：百分制成绩转换为等级制成绩。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%83%E4%B9%A03%EF%BC%9A%E8%BE%93%E5%85%A5%E4%B8%89%E6%9D%A1%E8%BE%B9%E9%95%BF%EF%BC%8C%E5%A6%82%E6%9E%9C%E8%83%BD%E6%9E%84%E6%88%90%E4%B8%89%E8%A7%92%E5%BD%A2%E5%B0%B1%E8%AE%A1%E7%AE%97%E5%91%A8%E9%95%BF%E5%92%8C%E9%9D%A2%E7%A7%AF%E3%80%82"><span class="nav-number">1.3.3.</span> <span class="nav-text">练习3：输入三条边长，如果能构成三角形就计算周长和面积。</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="i0lcy"
+      src="/images/1.jpg">
+  <p class="site-author-name" itemprop="name">i0lcy</p>
+  <div class="site-description" itemprop="description">yamiyami~</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/13/03.%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1.jpg">
+      <meta itemprop="name" content="i0lcy">
+      <meta itemprop="description" content="yamiyami~">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="i00lcyのblog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-02-13 16:51:28" itemprop="dateCreated datePublished" datetime="2021-02-13T16:51:28+08:00">2021-02-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-12-24 12:04:10" itemprop="dateModified" datetime="2020-12-24T12:04:10+08:00">2020-12-24</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="分支结构"><a href="#分支结构" class="headerlink" title="分支结构"></a>分支结构</h2><h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p>迄今为止，我们写的Python代码都是一条一条语句顺序执行，这种代码结构通常称之为顺序结构。然而仅有顺序结构并不能解决所有的问题，比如我们设计一个游戏，游戏第一关的通关条件是玩家获得1000分，那么在完成本局游戏后，我们要根据玩家得到分数来决定究竟是进入第二关，还是告诉玩家“Game Over”，这里就会产生两个分支，而且这两个分支只有一个会被执行。类似的场景还有很多，我们将这种结构称之为“分支结构”或“选择结构”。给大家一分钟的时间，你应该可以想到至少5个以上这样的例子，赶紧试一试。</p>
+<h3 id="if语句的使用"><a href="#if语句的使用" class="headerlink" title="if语句的使用"></a>if语句的使用</h3><p>在Python中，要构造分支结构可以使用<code>if</code>、<code>elif</code>和<code>else</code>关键字。所谓<strong>关键字</strong>就是有特殊含义的单词，像<code>if</code>和<code>else</code>就是专门用于构造分支结构的关键字，很显然你不能够使用它作为变量名（事实上，用作其他的标识符也是不可以）。下面的例子中演示了如何构造一个分支结构。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">用户身份验证</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">username = <span class="built_in">input</span>(<span class="string">&#x27;请输入用户名: &#x27;</span>)</span><br><span class="line">password = <span class="built_in">input</span>(<span class="string">&#x27;请输入口令: &#x27;</span>)</span><br><span class="line"><span class="comment"># 用户名是admin且密码是123456则身份验证成功否则身份验证失败</span></span><br><span class="line"><span class="keyword">if</span> username == <span class="string">&#x27;admin&#x27;</span> <span class="keyword">and</span> password == <span class="string">&#x27;123456&#x27;</span>:</span><br><span class="line">    print(<span class="string">&#x27;身份验证成功!&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">&#x27;身份验证失败!&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>需要说明的是和C/C++、Java等语言不同，Python中没有用花括号来构造代码块而是<strong>使用了缩进的方式来表示代码的层次结构</strong>，如果<code>if</code>条件成立的情况下需要执行多条语句，只要保持多条语句具有相同的缩进就可以了。换句话说<strong>连续的代码如果又保持了相同的缩进那么它们属于同一个代码块</strong>，相当于是一个执行的整体。<strong>缩进</strong>可以使用任意数量的空格，但<strong>通常使用4个空格</strong>，建议大家<strong>不要使用制表键</strong>或者<strong>设置你的代码编辑工具自动将制表键变成4个空格</strong>。</p>
+<p>当然如果要构造出更多的分支，可以使用<code>if...elif...else...</code>结构或者嵌套的<code>if...else...</code>结构，下面的代码演示了如何利用多分支结构实现分段函数求值。</p>
+<p><img src="./res/formula_1.png" alt="$$f(x)=\begin{cases} 3x-5&amp;\text{(x&gt;1)}\\x+2&amp;\text{(-1}\leq\text{x}\leq\text{1)}\\5x+3&amp;\text {(x&lt;-1)}\end{cases}$$"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">分段函数求值</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        3x - 5  (x &gt; 1)</span></span><br><span class="line"><span class="string">f(x) =  x + 2   (-1 &lt;= x &lt;= 1)</span></span><br><span class="line"><span class="string">        5x + 3  (x &lt; -1)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">x = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&#x27;x = &#x27;</span>))</span><br><span class="line"><span class="keyword">if</span> x &gt; <span class="number">1</span>:</span><br><span class="line">    y = <span class="number">3</span> * x - <span class="number">5</span></span><br><span class="line"><span class="keyword">elif</span> x &gt;= -<span class="number">1</span>:</span><br><span class="line">    y = x + <span class="number">2</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    y = <span class="number">5</span> * x + <span class="number">3</span></span><br><span class="line">print(<span class="string">&#x27;f(%.2f) = %.2f&#x27;</span> % (x, y))</span><br></pre></td></tr></table></figure>
+<p>当然根据实际开发的需要，分支结构是可以嵌套的，例如判断是否通关以后还要根据你获得的宝物或者道具的数量对你的表现给出等级（比如点亮两颗或三颗星星），那么我们就需要在<code>if</code>的内部构造出一个新的分支结构，同理<code>elif</code>和<code>else</code>中也可以再构造新的分支，我们称之为嵌套的分支结构，也就是说上面的代码也可以写成下面的样子。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">分段函数求值</span></span><br><span class="line"><span class="string">		3x - 5	(x &gt; 1)</span></span><br><span class="line"><span class="string">f(x) =	x + 2	(-1 &lt;= x &lt;= 1)</span></span><br><span class="line"><span class="string">		5x + 3	(x &lt; -1)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">x = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&#x27;x = &#x27;</span>))</span><br><span class="line"><span class="keyword">if</span> x &gt; <span class="number">1</span>:</span><br><span class="line">    y = <span class="number">3</span> * x - <span class="number">5</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">if</span> x &gt;= -<span class="number">1</span>:</span><br><span class="line">        y = x + <span class="number">2</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        y = <span class="number">5</span> * x + <span class="number">3</span></span><br><span class="line">print(<span class="string">&#x27;f(%.2f) = %.2f&#x27;</span> % (x, y))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>说明：</strong> 大家可以自己感受一下这两种写法到底是哪一种更好。在之前我们提到的Python之禅中有这么一句话“Flat is better than nested.”，之所以提倡代码“扁平化”是因为嵌套结构的嵌套层次多了之后会严重的影响代码的可读性，所以能使用扁平化的结构时就不要使用嵌套。</p>
+</blockquote>
+<h3 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h3><h4 id="练习1：英制单位英寸与公制单位厘米互换。"><a href="#练习1：英制单位英寸与公制单位厘米互换。" class="headerlink" title="练习1：英制单位英寸与公制单位厘米互换。"></a>练习1：英制单位英寸与公制单位厘米互换。</h4><p>参考答案：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">英制单位英寸和公制单位厘米互换</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">value = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&#x27;请输入长度: &#x27;</span>))</span><br><span class="line">unit = <span class="built_in">input</span>(<span class="string">&#x27;请输入单位: &#x27;</span>)</span><br><span class="line"><span class="keyword">if</span> unit == <span class="string">&#x27;in&#x27;</span> <span class="keyword">or</span> unit == <span class="string">&#x27;英寸&#x27;</span>:</span><br><span class="line">    print(<span class="string">&#x27;%f英寸 = %f厘米&#x27;</span> % (value, value * <span class="number">2.54</span>))</span><br><span class="line"><span class="keyword">elif</span> unit == <span class="string">&#x27;cm&#x27;</span> <span class="keyword">or</span> unit == <span class="string">&#x27;厘米&#x27;</span>:</span><br><span class="line">    print(<span class="string">&#x27;%f厘米 = %f英寸&#x27;</span> % (value, value / <span class="number">2.54</span>))</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">&#x27;请输入有效的单位&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="练习2：百分制成绩转换为等级制成绩。"><a href="#练习2：百分制成绩转换为等级制成绩。" class="headerlink" title="练习2：百分制成绩转换为等级制成绩。"></a>练习2：百分制成绩转换为等级制成绩。</h4><blockquote>
+<p><strong>要求</strong>：如果输入的成绩在90分以上（含90分）输出A；80分-90分（不含90分）输出B；70分-80分（不含80分）输出C；60分-70分（不含70分）输出D；60分以下输出E。</p>
+</blockquote>
+<p>参考答案：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">百分制成绩转换为等级制成绩</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">score = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&#x27;请输入成绩: &#x27;</span>))</span><br><span class="line"><span class="keyword">if</span> score &gt;= <span class="number">90</span>:</span><br><span class="line">    grade = <span class="string">&#x27;A&#x27;</span></span><br><span class="line"><span class="keyword">elif</span> score &gt;= <span class="number">80</span>:</span><br><span class="line">    grade = <span class="string">&#x27;B&#x27;</span></span><br><span class="line"><span class="keyword">elif</span> score &gt;= <span class="number">70</span>:</span><br><span class="line">    grade = <span class="string">&#x27;C&#x27;</span></span><br><span class="line"><span class="keyword">elif</span> score &gt;= <span class="number">60</span>:</span><br><span class="line">    grade = <span class="string">&#x27;D&#x27;</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    grade = <span class="string">&#x27;E&#x27;</span></span><br><span class="line">print(<span class="string">&#x27;对应的等级是:&#x27;</span>, grade)</span><br></pre></td></tr></table></figure>
+<h4 id="练习3：输入三条边长，如果能构成三角形就计算周长和面积。"><a href="#练习3：输入三条边长，如果能构成三角形就计算周长和面积。" class="headerlink" title="练习3：输入三条边长，如果能构成三角形就计算周长和面积。"></a>练习3：输入三条边长，如果能构成三角形就计算周长和面积。</h4><p>参考答案：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">判断输入的边长能否构成三角形，如果能则计算出三角形的周长和面积</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Version: 0.1</span></span><br><span class="line"><span class="string">Author: 骆昊</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">a = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&#x27;a = &#x27;</span>))</span><br><span class="line">b = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&#x27;b = &#x27;</span>))</span><br><span class="line">c = <span class="built_in">float</span>(<span class="built_in">input</span>(<span class="string">&#x27;c = &#x27;</span>))</span><br><span class="line"><span class="keyword">if</span> a + b &gt; c <span class="keyword">and</span> a + c &gt; b <span class="keyword">and</span> b + c &gt; a:</span><br><span class="line">    print(<span class="string">&#x27;周长: %f&#x27;</span> % (a + b + c))</span><br><span class="line">    p = (a + b + c) / <span class="number">2</span></span><br><span class="line">    area = (p * (p - a) * (p - b) * (p - c)) ** <span class="number">0.5</span></span><br><span class="line">    print(<span class="string">&#x27;面积: %f&#x27;</span> % (area))</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">&#x27;不能构成三角形&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>说明：</strong> 上面使用的通过边长计算三角形面积的公式叫做<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E6%B5%B7%E4%BC%A6%E5%85%AC%E5%BC%8F">海伦公式</a>。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/13/02.%E8%AF%AD%E8%A8%80%E5%85%83%E7%B4%A0/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/02/13/04.%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">i0lcy</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"live2d-widget-model-wanko"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
