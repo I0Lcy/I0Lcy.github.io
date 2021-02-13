@@ -2902,16 +2902,3 @@ mark.search-keyword {
     padding: 10px 12px;
   }
 }
-body {
-  background-image: url("/images/2.webp");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: 100% 100%;
-}
-.main-inner {
-  background: #fff;
-  opacity: 0.8;
-}
-.header-inner {
-  opacity: 0.8;
-}
