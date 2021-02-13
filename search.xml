@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>python学习笔记</title>
+    <url>/2021/02/13/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h2 id="记录了python到网络编程全部的笔记"><a href="#记录了python到网络编程全部的笔记" class="headerlink" title="记录了python到网络编程全部的笔记"></a>记录了python到网络编程全部的笔记</h2><a id="more"></a>
+
+
+<h1 id="还会持续更新"><a href="#还会持续更新" class="headerlink" title="还会持续更新"></a>还会持续更新</h1><h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>i0lcy.github.io</p>
+]]></content>
+  </entry>
+  <entry>
     <title></title>
     <url>/2021/02/13/hello-world/</url>
     <content><![CDATA[<h2 id="并发下载"><a href="#并发下载" class="headerlink" title="并发下载"></a>并发下载</h2><h3 id="多线程和多进程补充知识点"><a href="#多线程和多进程补充知识点" class="headerlink" title="多线程和多进程补充知识点"></a>多线程和多进程补充知识点</h3><h4 id="threading-local类"><a href="#threading-local类" class="headerlink" title="threading.local类"></a>threading.local类</h4><p>使用线程时最不愿意遇到的情况就是多个线程竞争资源，在这种情况下为了保证资源状态的正确性，我们可能需要对资源进行加锁保护的处理，这一方面会导致程序失去并发性，另外如果多个线程竞争多个资源时，还有可能因为加锁方式的不当导致<a href="https://zh.wikipedia.org/wiki/%E6%AD%BB%E9%94%81">死锁</a>。要解决多个线程竞争资源的问题，其中一个方案就是让每个线程都持有资源的副本（拷贝），这样每个线程可以操作自己所持有的资源，从而规避对资源的竞争。</p>
@@ -169,15 +178,6 @@
 </blockquote>
 </li>
 </ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>python学习笔记</title>
-    <url>/2021/02/13/python%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h2 id="记录了python到网络编程全部的笔记"><a href="#记录了python到网络编程全部的笔记" class="headerlink" title="记录了python到网络编程全部的笔记"></a>记录了python到网络编程全部的笔记</h2><a id="more"></a>
-
-
-<h1 id="还会持续更新"><a href="#还会持续更新" class="headerlink" title="还会持续更新"></a>还会持续更新</h1><h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>i0lcy.github.io</p>
 ]]></content>
   </entry>
 </search>
