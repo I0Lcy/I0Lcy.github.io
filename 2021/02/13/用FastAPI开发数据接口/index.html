@@ -24,30 +24,35 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
-<meta name="description" content="yamiyami~">
-<meta property="og:type" content="website">
+<meta name="description" content="用FastAPI开发网络数据接口FastAPI 是一个用于构建API（网络数据接口）的现代、高性能的Web框架，基于Python 3.6+，使用了Python中的类型提示进行类型检查，非常符合工程化开发的需求，在业界有非常好的口碑。下面，我们先用代码告诉大家FastAPI到底能做什么，然后再来讲解它的方方面面。 FastAPI五分钟上手 安装依赖库和ASGI服务器（支持异步I&#x2F;O的Python服务">
+<meta property="og:type" content="article">
 <meta property="og:title" content="i00lcyのblog">
-<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:url" content="http://example.com/2021/02/13/%E7%94%A8FastAPI%E5%BC%80%E5%8F%91%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3/index.html">
 <meta property="og:site_name" content="i00lcyのblog">
-<meta property="og:description" content="yamiyami~">
+<meta property="og:description" content="用FastAPI开发网络数据接口FastAPI 是一个用于构建API（网络数据接口）的现代、高性能的Web框架，基于Python 3.6+，使用了Python中的类型提示进行类型检查，非常符合工程化开发的需求，在业界有非常好的口碑。下面，我们先用代码告诉大家FastAPI到底能做什么，然后再来讲解它的方方面面。 FastAPI五分钟上手 安装依赖库和ASGI服务器（支持异步I&#x2F;O的Python服务">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/02/13/%E7%94%A8FastAPI%E5%BC%80%E5%8F%91%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3/res/run-first-demo.png">
+<meta property="og:image" content="http://example.com/2021/02/13/%E7%94%A8FastAPI%E5%BC%80%E5%8F%91%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3/res/first-demo-docs.png">
+<meta property="article:published_time" content="2021-02-13T09:15:28.424Z">
+<meta property="article:modified_time" content="2020-12-24T04:04:10.000Z">
 <meta property="article:author" content="i0lcy">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/02/13/%E7%94%A8FastAPI%E5%BC%80%E5%8F%91%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3/res/run-first-demo.png">
 
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2021/02/13/%E7%94%A8FastAPI%E5%BC%80%E5%8F%91%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3/">
 
 
 <script class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
-<title>i00lcyのblog</title>
+<title> | i00lcyのblog</title>
   
 
 
@@ -133,7 +138,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -146,6 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8FastAPI%E5%BC%80%E5%8F%91%E7%BD%91%E7%BB%9C%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.</span> <span class="nav-text">用FastAPI开发网络数据接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FastAPI%E4%BA%94%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8B"><span class="nav-number">1.1.</span> <span class="nav-text">FastAPI五分钟上手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94"><span class="nav-number">1.2.</span> <span class="nav-text">请求和响应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.3.</span> <span class="nav-text">接入关系型数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5"><span class="nav-number">1.4.</span> <span class="nav-text">依赖注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="nav-number">1.5.</span> <span class="nav-text">中间件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E5%8C%96"><span class="nav-number">1.6.</span> <span class="nav-text">异步化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E5%8C%96%E9%83%A8%E7%BD%B2%EF%BC%88Docker%EF%BC%89"><span class="nav-number">1.7.</span> <span class="nav-text">虚拟化部署（Docker）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%EF%BC%9A%E8%BD%A6%E8%BE%86%E8%BF%9D%E7%AB%A0%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.8.</span> <span class="nav-text">项目实战：车辆违章查询</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -189,16 +195,17 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/13/%E7%94%A8FastAPI%E5%BC%80%E5%8F%91%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -211,9 +218,9 @@
       <meta itemprop="name" content="i00lcyのblog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/02/13/%E7%94%A8FastAPI%E5%BC%80%E5%8F%91%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%8F%A3/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -243,7 +250,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="用FastAPI开发网络数据接口"><a href="#用FastAPI开发网络数据接口" class="headerlink" title="用FastAPI开发网络数据接口"></a>用FastAPI开发网络数据接口</h2><p>FastAPI 是一个用于构建API（网络数据接口）的现代、高性能的Web框架，基于Python 3.6+，使用了Python中的类型提示进行类型检查，非常符合工程化开发的需求，在业界有非常好的口碑。下面，我们先用代码告诉大家FastAPI到底能做什么，然后再来讲解它的方方面面。</p>
+        <h2 id="用FastAPI开发网络数据接口"><a href="#用FastAPI开发网络数据接口" class="headerlink" title="用FastAPI开发网络数据接口"></a>用FastAPI开发网络数据接口</h2><p>FastAPI 是一个用于构建API（网络数据接口）的现代、高性能的Web框架，基于Python 3.6+，使用了Python中的类型提示进行类型检查，非常符合工程化开发的需求，在业界有非常好的口碑。下面，我们先用代码告诉大家FastAPI到底能做什么，然后再来讲解它的方方面面。</p>
 <h3 id="FastAPI五分钟上手"><a href="#FastAPI五分钟上手" class="headerlink" title="FastAPI五分钟上手"></a>FastAPI五分钟上手</h3><ol>
 <li><p>安装依赖库和ASGI服务器（支持异步I/O的Python服务器）。</p>
  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install fastapi</span><br><span class="line">pip install uvicorn</span><br></pre></td></tr></table></figure></li>
@@ -267,7 +274,6 @@
 </ol>
 <h3 id="请求和响应"><a href="#请求和响应" class="headerlink" title="请求和响应"></a>请求和响应</h3><h3 id="接入关系型数据库"><a href="#接入关系型数据库" class="headerlink" title="接入关系型数据库"></a>接入关系型数据库</h3><p>我们可以使用SQLAlchemy三方库来实现对关系型数据库的接入。SQLAlchemy是一个ORM（对象关系映射）框架，ORM框架可以解决Python程序的面向对象模型和关系型数据库的关系模型并不匹配的问题，使得我们可以用面向对象的方式实现数据的CRUD操作。</p>
 <h3 id="依赖注入"><a href="#依赖注入" class="headerlink" title="依赖注入"></a>依赖注入</h3><h3 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h3><h3 id="异步化"><a href="#异步化" class="headerlink" title="异步化"></a>异步化</h3><h3 id="虚拟化部署（Docker）"><a href="#虚拟化部署（Docker）" class="headerlink" title="虚拟化部署（Docker）"></a>虚拟化部署（Docker）</h3><h3 id="项目实战：车辆违章查询"><a href="#项目实战：车辆违章查询" class="headerlink" title="项目实战：车辆违章查询"></a>项目实战：车辆违章查询</h3>
-      
     </div>
 
     
@@ -275,11 +281,13 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+
+        
+
     </footer>
   </article>
 </div>
+
 
 
 
