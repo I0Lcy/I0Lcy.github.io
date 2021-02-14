@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<script src="/live2d-widget/autoload.js"></script>
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="NoSQL入门NoSQL概述如今，大多数的计算机系统（包括服务器、PC、移动设备等）都会产生庞大的数据量。其实，早在2012年的时候，全世界每天产生的数据量就达到了2.5EB（艾字节，$$1EB\approx10^{18}B$$）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python机器学习">
+<meta property="og:url" content="http://example.com/2021/02/14/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="i00lcyのblog">
+<meta property="og:description" content="NoSQL入门NoSQL概述如今，大多数的计算机系统（包括服务器、PC、移动设备等）都会产生庞大的数据量。其实，早在2012年的时候，全世界每天产生的数据量就达到了2.5EB（艾字节，$$1EB\approx10^{18}B$$）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="e:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-bind-and-port.png">
+<meta property="og:image" content="e:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-databases.png">
+<meta property="og:image" content="e:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-rdb-1.png">
+<meta property="og:image" content="e:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-rdb-3.png">
+<meta property="og:image" content="e:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-aof.png">
+<meta property="og:image" content="e:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-security.png">
+<meta property="og:image" content="e:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-replication.png">
+<meta property="og:image" content="e:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-slow-logs.png">
+<meta property="og:image" content="e:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-data-types.png">
+<meta property="article:published_time" content="2021-02-14T12:11:30.000Z">
+<meta property="article:modified_time" content="2021-02-14T12:15:03.411Z">
+<meta property="article:author" content="i0lcy">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="e:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-bind-and-port.png">
+
+
+<link rel="canonical" href="http://example.com/2021/02/14/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>python机器学习 | i00lcyのblog</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+  <script type="text/javascript" src="/js/clicklove.js"></script>
+<link rel="alternate" href="/atom.xml" title="i00lcyのblog" type="application/atom+xml">
+</head>
+<script src="/live2d-widget/autoload.js"></script>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">i00lcyのblog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NoSQL%E5%85%A5%E9%97%A8"><span class="nav-number">1.</span> <span class="nav-text">NoSQL入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NoSQL%E6%A6%82%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">NoSQL概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis%E6%A6%82%E8%BF%B0"><span class="nav-number">1.2.</span> <span class="nav-text">Redis概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis%E7%AE%80%E4%BB%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text">Redis简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.2.2.</span> <span class="nav-text">Redis的应用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE"><span class="nav-number">1.2.3.</span> <span class="nav-text">Redis的安装和配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%92%8C%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">1.2.4.</span> <span class="nav-text">Redis的服务器和客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8Python%E7%A8%8B%E5%BA%8F%E4%B8%AD%E4%BD%BF%E7%94%A8Redis"><span class="nav-number">1.2.5.</span> <span class="nav-text">在Python程序中使用Redis</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MongoDB%E6%A6%82%E8%BF%B0"><span class="nav-number">1.3.</span> <span class="nav-text">MongoDB概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MongoDB%E7%AE%80%E4%BB%8B"><span class="nav-number">1.3.1.</span> <span class="nav-text">MongoDB简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MongoDB%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E5%90%AF%E5%8A%A8"><span class="nav-number">1.3.2.</span> <span class="nav-text">MongoDB的安装和启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MongoDB%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.3.3.</span> <span class="nav-text">MongoDB基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E8%BF%87Shell%E6%93%8D%E4%BD%9CMongoDB"><span class="nav-number">1.3.4.</span> <span class="nav-text">通过Shell操作MongoDB</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8Python%E7%A8%8B%E5%BA%8F%E4%B8%AD%E6%93%8D%E4%BD%9CMongoDB"><span class="nav-number">1.3.5.</span> <span class="nav-text">在Python程序中操作MongoDB</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="i0lcy"
+      src="/images/1.jpg">
+  <p class="site-author-name" itemprop="name">i0lcy</p>
+  <div class="site-description" itemprop="description">yamiyami~</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/I0Lcy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;I0Lcy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:kgjoylcy@foxmail.com" title="E-Mail → mailto:kgjoylcy@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/i0lcy" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;i0lcy" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/14/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1.jpg">
+      <meta itemprop="name" content="i0lcy">
+      <meta itemprop="description" content="yamiyami~">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="i00lcyのblog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          python机器学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-02-14 20:11:30 / 修改时间：20:15:03" itemprop="dateCreated datePublished" datetime="2021-02-14T20:11:30+08:00">2021-02-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="NoSQL入门"><a href="#NoSQL入门" class="headerlink" title="NoSQL入门"></a>NoSQL入门</h2><h3 id="NoSQL概述"><a href="#NoSQL概述" class="headerlink" title="NoSQL概述"></a>NoSQL概述</h3><p>如今，大多数的计算机系统（包括服务器、PC、移动设备等）都会产生庞大的数据量。其实，早在2012年的时候，全世界每天产生的数据量就达到了2.5EB（艾字节，$$1EB\approx10^{18}B$$）。</p>
+<a id="more"></a>
+
+<p>这些数据有很大一部分是由关系型数据库来存储和管理的。 早在1970年，E.F.Codd发表了论述关系型数据库的著名论文“<em>A relational model of data for large shared data banks</em>”，这篇文章奠定了关系型数据库的基础并在接下来的数十年时间内产生了深远的影响。实践证明，关系型数据库是实现数据持久化最为重要的方式，它也是大多数应用在选择持久化方案时的首选技术。</p>
+<p>NoSQL是一项全新的数据库革命性运动，虽然它的历史可以追溯到1998年，但是NoSQL真正深入人心并得到广泛的应用是在进入大数据时候以后，业界普遍认为NoSQL是更适合大数据存储的技术方案，这才使得NoSQL的发展达到了前所未有的高度。2012年《纽约时报》的一篇专栏中写到，大数据时代已经降临，在商业、经济及其他领域中，决策将不再基于经验和直觉而是基于数据和分析而作出。事实上，在天文学、气象学、基因组学、生物学、社会学、互联网搜索引擎、金融、医疗、社交网络、电子商务等诸多领域，由于数据过于密集和庞大，在数据的分析和处理上也遇到了前所未有的限制和阻碍，这一切都使得对大数据处理技术的研究被提升到了新的高度，也使得各种NoSQL的技术方案进入到了公众的视野。</p>
+<p>NoSQL数据库按照其存储类型可以大致分为以下几类：</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>部分代表</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>列族数据库</td>
+<td>HBase<br>Cassandra<br>Hypertable</td>
+<td>顾名思义是按列存储数据的。最大的特点是方便存储结构化和半结构化数据，方便做数据压缩，对针对某一列或者某几列的查询有非常大的I/O优势，适合于批量数据处理和即时查询。</td>
+</tr>
+<tr>
+<td>文档数据库</td>
+<td>MongoDB<br>CouchDB<br>ElasticSearch</td>
+<td>文档数据库一般用类JSON格式存储数据，存储的内容是文档型的。这样也就有机会对某些字段建立索引，实现关系数据库的某些功能，但不提供对参照完整性和分布事务的支持。</td>
+</tr>
+<tr>
+<td>KV数据库</td>
+<td>DynamoDB<br>Redis<br>LevelDB</td>
+<td>可以通过key快速查询到其value，有基于内存和基于磁盘两种实现方案。</td>
+</tr>
+<tr>
+<td>图数据库</td>
+<td>Neo4J<br>FlockDB<br>JanusGraph</td>
+<td>使用图结构进行语义查询的数据库，它使用节点、边和属性来表示和存储数据。图数据库从设计上，就可以简单快速的检索难以在关系系统中建模的复杂层次结构。</td>
+</tr>
+<tr>
+<td>对象数据库</td>
+<td>db4o<br>Versant</td>
+<td>通过类似面向对象语言的语法操作数据库，通过对象的方式存取数据。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>说明</strong>：想了解更多的NoSQL数据库，可以访问<a target="_blank" rel="noopener" href="http://nosql-database.org/">http://nosql-database.org/</a>。</p>
+</blockquote>
+<h3 id="Redis概述"><a href="#Redis概述" class="headerlink" title="Redis概述"></a>Redis概述</h3><p>Redis是一种基于键值对的NoSQL数据库，它提供了对多种数据类型（字符串、哈希、列表、集合、有序集合、位图等）的支持，能够满足很多应用场景的需求。Redis将数据放在内存中，因此读写性能是非常惊人的。与此同时，Redis也提供了持久化机制，能够将内存中的数据保存到硬盘上，在发生意外状况时数据也不会丢掉。此外，Redis还支持键过期、地理信息运算、发布订阅、事务、管道、Lua脚本扩展等功能，总而言之，Redis的功能和性能都非常强大，如果项目中要实现高速缓存和消息队列这样的服务，直接交给Redis就可以了。目前，国内外很多著名的企业和商业项目都使用了Redis，包括：Twitter、Github、StackOverflow、新浪微博、百度、优酷土豆、美团、小米、唯品会等。</p>
+<h4 id="Redis简介"><a href="#Redis简介" class="headerlink" title="Redis简介"></a>Redis简介</h4><p>2008年，一个名为Salvatore Sanfilippo的程序员为他开发的LLOOGG项目定制了专属的数据库（因为之前他无论怎样优化MySQL，系统性能已经无法再提升了），这项工作的成果就是Redis的初始版本。后来他将Redis的代码放到了全球最大的代码托管平台<a target="_blank" rel="noopener" href="https://github.com/antirez/redis">Github</a>，从那以后，Redis引发了大量开发者的好评和关注，继而有数百人参与了Redis的开发和维护，这使得Redis的功能越来越强大和性能越来越好。</p>
+<p>Redis是REmote DIctionary Server的缩写，它是一个用ANSI C编写的高性能的key-value存储系统，与其他的key-value存储系统相比，Redis有以下一些特点（也是优点）：</p>
+<ul>
+<li>Redis的读写性能极高，并且有丰富的特性（发布/订阅、事务、通知等）。</li>
+<li>Redis支持数据的持久化（RDB和AOF两种方式），可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。</li>
+<li>Redis支持多种数据类型，包括：string、hash、list、set，zset、bitmap、hyperloglog等。</li>
+<li>Redis支持主从复制（实现读写分析）以及哨兵模式（监控master是否宕机并自动调整配置）。</li>
+<li>Redis支持分布式集群，可以很容易的通过水平扩展来提升系统的整体性能。</li>
+<li>Redis基于TCP提供的可靠传输服务进行通信，很多编程语言都提供了Redis客户端支持。</li>
+</ul>
+<h4 id="Redis的应用场景"><a href="#Redis的应用场景" class="headerlink" title="Redis的应用场景"></a>Redis的应用场景</h4><ol>
+<li>高速缓存  - 将不常变化但又经常被访问的热点数据放到Redis数据库中，可以大大降低关系型数据库的压力，从而提升系统的响应性能。</li>
+<li>排行榜 - 很多网站都有排行榜功能，利用Redis中的列表和有序集合可以非常方便的构造各种排行榜系统。</li>
+<li>商品秒杀/投票点赞 - Redis提供了对计数操作的支持，网站上常见的秒杀、点赞等功能都可以利用Redis的计数器通过+1或-1的操作来实现，从而避免了使用关系型数据的<code>update</code>操作。</li>
+<li>分布式锁 - 利用Redis可以跨多台服务器实现分布式锁（类似于线程锁，但是能够被多台机器上的多个线程或进程共享）的功能，用于实现一个阻塞式操作。</li>
+<li>消息队列 - 消息队列和高速缓存一样，是一个大型网站不可缺少的基础服务，可以实现业务解耦和非实时业务削峰等特性，这些我们都会在后面的项目中为大家展示。</li>
+</ol>
+<h4 id="Redis的安装和配置"><a href="#Redis的安装和配置" class="headerlink" title="Redis的安装和配置"></a>Redis的安装和配置</h4><p>可以使用Linux系统的包管理工具（如yum）来安装Redis，也可以通过在Redis的<a target="_blank" rel="noopener" href="https://redis.io/">官方网站</a>下载Redis的源代码，解压缩解归档之后通过make工具对源代码进行构建并安装，在更新这篇文档时，Redis官方提供的最新稳定版本是<a target="_blank" rel="noopener" href="https://download.redis.io/releases/redis-5.0.10.tar.gz">Redis 5.0.10</a>。</p>
+<p>下载：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://download.redis.io/releases/redis-5.0.10.tar.gz</span><br></pre></td></tr></table></figure>
+<p>解压缩和解归档：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxf redis-5.0.10.tar.gz</span><br></pre></td></tr></table></figure>
+<p>进入Redis源代码目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> redis-5.0.10</span><br></pre></td></tr></table></figure>
+<p>构建和安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<p>在redis源代码目录下有一个名为redis.conf的配置文件，我们可以先查看一下该文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim redis.conf</span><br></pre></td></tr></table></figure>
+<p>下面我们对Redis的配置文件进行一个扼要的介绍。</p>
+<p>配置Redis服务的IP地址和端口：</p>
+<p><img src="E:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-bind-and-port.png"></p>
+<p>配置底层有多少个数据库：</p>
+<p><img src="E:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-databases.png"></p>
+<p>配置Redis的持久化机制 - RDB。</p>
+<p><img src="E:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-rdb-1.png"></p>
+<p><img src="E:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-rdb-3.png"></p>
+<p>配置Redis的持久化机制 - AOF：</p>
+<p><img src="E:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-aof.png"></p>
+<p>配置访问Redis服务器的口令：</p>
+<p><img src="E:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-security.png"></p>
+<p>配置Redis的主从复制（通过主从复制可以实现读写分离）：</p>
+<p><img src="E:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-replication.png"></p>
+<p>配置慢查询：</p>
+<p><img src="E:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-slow-logs.png"></p>
+<p>上面这些内容就是Redis的基本配置，如果你对上面的内容感到困惑也没有关系，先把Redis用起来再回头去推敲这些内容就行了。如果想找一些参考书，<a target="_blank" rel="noopener" href="https://item.jd.com/12121730.html">《Redis开发与运维》</a>是一本不错的入门读物，而<a target="_blank" rel="noopener" href="https://item.jd.com/11791607.html">《Redis实战》</a>是不错的进阶读物。</p>
+<h4 id="Redis的服务器和客户端"><a href="#Redis的服务器和客户端" class="headerlink" title="Redis的服务器和客户端"></a>Redis的服务器和客户端</h4><p>接下来启动Redis服务器，下面的方式将以默认的配置启动Redis服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server</span><br></pre></td></tr></table></figure>
+<p>如果希望修改Redis的配置（如端口、认证口令、持久化方式等），可以通过下面两种方式。</p>
+<p><strong>方式一</strong>：通过参数指定认证口令和AOF持久化方式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server --requirepass yourpass --appendonly yes</span><br></pre></td></tr></table></figure>
+<p><strong>方式二</strong>：通过指定的配置文件来修改Redis的配置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server /root/redis-5.0.10/redis.conf</span><br></pre></td></tr></table></figure>
+<p>下面我们使用第一种方式来启动Redis并将其置于后台运行，将Redis产生的输出重定向到名为redis.log的文件中。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server --requirepass yourpass &gt; redis.log &amp;</span><br></pre></td></tr></table></figure>
+<p>可以通过<code>ps</code>或者<code>netstat</code>来检查Redis服务器是否启动成功。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep redis-server</span><br><span class="line">netstat -nap | grep redis-server</span><br></pre></td></tr></table></figure>
+<p>接下来，我们尝试用Redis命令行工具<code>redis-cli</code>去连接服务器，该工具默认连接本机的<code>6379</code>端口，如果需要指定Redis服务器和端口，可以使用<code>-h</code>和<code>-p</code>参数分别进行指定。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli</span><br></pre></td></tr></table></figure>
+<p>进入命令行工具后，就可以通过Redis的命令来操作Redis服务器，如下所示。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; auth yourpass</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+<p>Redis有着非常丰富的数据类型，也有很多的命令来操作这些数据，具体的内容可以查看<a target="_blank" rel="noopener" href="http://redisdoc.com/">Redis命令参考</a>，在这个网站上，除了Redis的命令参考，还有Redis的详细文档，其中包括了通知、事务、主从复制、持久化、哨兵、集群等内容。</p>
+<p><img src="E:/黑马python笔记/Python-100-Days-master/Python-100-Days-master/Day36-40/res/redis-data-types.png"></p>
+<blockquote>
+<p><strong>说明</strong>：上面的插图来自付磊和张益军编著的《Redis开发与运维》一书。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> username admin</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get username</span><br><span class="line"><span class="string">&quot;admin&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> password <span class="string">&quot;123456&quot;</span> ex 300</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get password</span><br><span class="line"><span class="string">&quot;123456&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; ttl username</span><br><span class="line">(<span class="built_in">integer</span>) -1</span><br><span class="line">127.0.0.1:6379&gt; ttl password</span><br><span class="line">(<span class="built_in">integer</span>) 286</span><br><span class="line">127.0.0.1:6379&gt; hset stu1 name hao</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; hset stu1 age 38</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; hset stu1 gender male</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; hgetall stu1</span><br><span class="line">1) <span class="string">&quot;name&quot;</span></span><br><span class="line">2) <span class="string">&quot;hao&quot;</span></span><br><span class="line">3) <span class="string">&quot;age&quot;</span></span><br><span class="line">4) <span class="string">&quot;38&quot;</span></span><br><span class="line">5) <span class="string">&quot;gender&quot;</span></span><br><span class="line">6) <span class="string">&quot;male&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; hvals stu1</span><br><span class="line">1) <span class="string">&quot;hao&quot;</span></span><br><span class="line">2) <span class="string">&quot;38&quot;</span></span><br><span class="line">3) <span class="string">&quot;male&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; hmset stu2 name wang age 18 gender female tel 13566778899</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; hgetall stu2</span><br><span class="line">1) <span class="string">&quot;name&quot;</span></span><br><span class="line">2) <span class="string">&quot;wang&quot;</span></span><br><span class="line">3) <span class="string">&quot;age&quot;</span></span><br><span class="line">4) <span class="string">&quot;18&quot;</span></span><br><span class="line">5) <span class="string">&quot;gender&quot;</span></span><br><span class="line">6) <span class="string">&quot;female&quot;</span></span><br><span class="line">7) <span class="string">&quot;tel&quot;</span></span><br><span class="line">8) <span class="string">&quot;13566778899&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; lpush nums 1 2 3 4 5</span><br><span class="line">(<span class="built_in">integer</span>) 5</span><br><span class="line">127.0.0.1:6379&gt; lrange nums 0 -1</span><br><span class="line">1) <span class="string">&quot;5&quot;</span></span><br><span class="line">2) <span class="string">&quot;4&quot;</span></span><br><span class="line">3) <span class="string">&quot;3&quot;</span></span><br><span class="line">4) <span class="string">&quot;2&quot;</span></span><br><span class="line">5) <span class="string">&quot;1&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; lpop nums</span><br><span class="line"><span class="string">&quot;5&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; lpop nums</span><br><span class="line"><span class="string">&quot;4&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; rpop nums</span><br><span class="line"><span class="string">&quot;1&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; rpop nums</span><br><span class="line"><span class="string">&quot;2&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; sadd fruits apple banana orange apple grape grape</span><br><span class="line">(<span class="built_in">integer</span>) 4</span><br><span class="line">127.0.0.1:6379&gt; scard fruits</span><br><span class="line">(<span class="built_in">integer</span>) 4</span><br><span class="line">127.0.0.1:6379&gt; smembers fruits</span><br><span class="line">1) <span class="string">&quot;grape&quot;</span></span><br><span class="line">2) <span class="string">&quot;orange&quot;</span></span><br><span class="line">3) <span class="string">&quot;banana&quot;</span></span><br><span class="line">4) <span class="string">&quot;apple&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; sismember fruits apple</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; sismember fruits durian</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; sadd nums1 1 2 3 4 5</span><br><span class="line">(<span class="built_in">integer</span>) 5</span><br><span class="line">127.0.0.1:6379&gt; sadd nums2 2 4 6 8</span><br><span class="line">(<span class="built_in">integer</span>) 4</span><br><span class="line">127.0.0.1:6379&gt; sinter nums1 nums2</span><br><span class="line">1) <span class="string">&quot;2&quot;</span></span><br><span class="line">2) <span class="string">&quot;4&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; sunion nums1 nums2</span><br><span class="line">1) <span class="string">&quot;1&quot;</span></span><br><span class="line">2) <span class="string">&quot;2&quot;</span></span><br><span class="line">3) <span class="string">&quot;3&quot;</span></span><br><span class="line">4) <span class="string">&quot;4&quot;</span></span><br><span class="line">5) <span class="string">&quot;5&quot;</span></span><br><span class="line">6) <span class="string">&quot;6&quot;</span></span><br><span class="line">7) <span class="string">&quot;8&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; sdiff nums1 nums2</span><br><span class="line">1) <span class="string">&quot;1&quot;</span></span><br><span class="line">2) <span class="string">&quot;3&quot;</span></span><br><span class="line">3) <span class="string">&quot;5&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; zadd topsinger 5234 zhangxy 1978 chenyx 2235 zhoujl 3520 xuezq</span><br><span class="line">(<span class="built_in">integer</span>) 4</span><br><span class="line">127.0.0.1:6379&gt; zrange topsinger 0 -1 withscores</span><br><span class="line">1) <span class="string">&quot;chenyx&quot;</span></span><br><span class="line">2) <span class="string">&quot;1978&quot;</span></span><br><span class="line">3) <span class="string">&quot;zhoujl&quot;</span></span><br><span class="line">4) <span class="string">&quot;2235&quot;</span></span><br><span class="line">5) <span class="string">&quot;xuezq&quot;</span></span><br><span class="line">6) <span class="string">&quot;3520&quot;</span></span><br><span class="line">7) <span class="string">&quot;zhangxy&quot;</span></span><br><span class="line">8) <span class="string">&quot;5234&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; zrevrange topsinger 0 -1</span><br><span class="line">1) <span class="string">&quot;zhangxy&quot;</span></span><br><span class="line">2) <span class="string">&quot;xuezq&quot;</span></span><br><span class="line">3) <span class="string">&quot;zhoujl&quot;</span></span><br><span class="line">4) <span class="string">&quot;chenyx&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; zrevrank topsinger zhoujl</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line">127.0.0.1:6379&gt; geoadd pois 116.39738549206541 39.90862689286386 tiananmen</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; geoadd pois 116.27172936413572 39.99135172904494 yiheyuan</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; geoadd pois 117.27766503308104 40.65332064313784 gubeishuizhen</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; geodist pois tiananmen gubeishuizhen km</span><br><span class="line"><span class="string">&quot;111.5333&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; geodist pois tiananmen yiheyuan km</span><br><span class="line"><span class="string">&quot;14.1230&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; georadius pois 116.86499108288572 40.40149669363615 50 km withdist</span><br><span class="line">1) 1) <span class="string">&quot;gubeishuizhen&quot;</span></span><br><span class="line">   2) <span class="string">&quot;44.7408&quot;</span></span><br></pre></td></tr></table></figure>
+<h4 id="在Python程序中使用Redis"><a href="#在Python程序中使用Redis" class="headerlink" title="在Python程序中使用Redis"></a>在Python程序中使用Redis</h4><p>可以使用pip安装名为<code>redis</code>的三方库，该三方库的核心是一个名为<code>Redis</code>的类，<code>Redis</code>对象代表一个Redis客户端，通过该客户端可以向Redis服务器发送命令并获取执行的结果。上面我们在Redis客户端中使用的命令基本上就是<code>Redis</code>对象可以接收的消息，所以如果了解了Redis的命令就可以在Python中玩转Redis。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install redis</span><br></pre></td></tr></table></figure>
+<p>进入Python交互式环境，使用<code>redis</code>三方库来操作Redis。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import redis</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">&gt;&gt;&gt; client = redis.Redis(host=<span class="string">&#x27;127.0.0.1&#x27;</span>, port=6379, password=<span class="string">&#x27;yourpass&#x27;</span>)</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">&gt;&gt;&gt; client.set(<span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;admin&#x27;</span>)</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; client.hset(<span class="string">&#x27;student&#x27;</span>, <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;luohao&#x27;</span>)</span><br><span class="line">1</span><br><span class="line">&gt;&gt;&gt; client.hset(<span class="string">&#x27;student&#x27;</span>, <span class="string">&#x27;age&#x27;</span>, 40)</span><br><span class="line">1</span><br><span class="line">&gt;&gt;&gt; client.keys(<span class="string">&#x27;*&#x27;</span>)</span><br><span class="line">[b<span class="string">&#x27;username&#x27;</span>, b<span class="string">&#x27;student&#x27;</span>]</span><br><span class="line">&gt;&gt;&gt; client.get(<span class="string">&#x27;username&#x27;</span>)</span><br><span class="line">b<span class="string">&#x27;admin&#x27;</span></span><br><span class="line">&gt;&gt;&gt; client.hgetall(<span class="string">&#x27;student&#x27;</span>)</span><br><span class="line">&#123;b<span class="string">&#x27;name&#x27;</span>: b<span class="string">&#x27;luohao&#x27;</span>, b<span class="string">&#x27;age&#x27;</span>: b<span class="string">&#x27;40&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="MongoDB概述"><a href="#MongoDB概述" class="headerlink" title="MongoDB概述"></a>MongoDB概述</h3><h4 id="MongoDB简介"><a href="#MongoDB简介" class="headerlink" title="MongoDB简介"></a>MongoDB简介</h4><p>MongoDB是2009年问世的一个面向文档的数据库管理系统，由C++语言编写，旨在为Web应用提供可扩展的高性能数据存储解决方案。虽然在划分类别的时候后，MongoDB被认为是NoSQL的产品，但是它更像一个介于关系数据库和非关系数据库之间的产品，在非关系数据库中它功能最丰富，最像关系数据库。</p>
+<p>MongoDB将数据存储为一个文档，一个文档由一系列的“键值对”组成，其文档类似于JSON对象，但是MongoDB对JSON进行了二进制处理（能够更快的定位key和value），因此其文档的存储格式称为BSON。关于JSON和BSON的差别大家可以看看MongoDB官方网站的文章<a target="_blank" rel="noopener" href="https://www.mongodb.com/json-and-bson">《JSON and BSON》</a>。</p>
+<p>目前，MongoDB已经提供了对Windows、macOS、Linux、Solaris等多个平台的支持，而且也提供了多种开发语言的驱动程序，Python当然是其中之一。</p>
+<h4 id="MongoDB的安装和启动"><a href="#MongoDB的安装和启动" class="headerlink" title="MongoDB的安装和启动"></a>MongoDB的安装和启动</h4><p>可以从MongoDB的<a target="_blank" rel="noopener" href="https://www.mongodb.com/try/download/community">官方下载链接</a>下载MongoDB，官方提供了Windows、macOS和多种Linux版本的安装包。下面以CentOS为例，简单说一下如何安装和启动MongoDB。</p>
+<p>下载服务器和命令行的RPM安装包。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.4/x86_64/RPMS/mongodb-org-server-4.4.2-1.el7.x86_64.rpm</span><br><span class="line">rpm -ivh mongodb-org-server-4.4.2-1.el7.x86_64.rpm</span><br><span class="line">wget https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.4/x86_64/RPMS/mongodb-org-shell-4.4.2-1.el7.x86_64.rpm</span><br><span class="line">rpm -ivh mongodb-org-shell-4.4.2-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure>
+<p>启动MongoDB服务器，需要先创建保存数据的文件夹。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /data/db</span><br></pre></td></tr></table></figure>
+<p>修改MongoDB的配置文件，将其中<code>bindIp</code>选项的值修改为本机IP地址而不是默认的<code>127.0.0.1</code>，本机IP地址可以通过<code>ifconfig</code>命令进行查看。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/mongod.conf</span><br></pre></td></tr></table></figure>
+<p>使用<code>systemctl</code>命令启动服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mongod</span><br></pre></td></tr></table></figure>
+<h4 id="MongoDB基本概念"><a href="#MongoDB基本概念" class="headerlink" title="MongoDB基本概念"></a>MongoDB基本概念</h4><p>我们通过与关系型数据库的比较来说明MongoDB中的一些概念。</p>
+<table>
+<thead>
+<tr>
+<th>SQL</th>
+<th>MongoDB</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>database</td>
+<td>database</td>
+</tr>
+<tr>
+<td>table（表）</td>
+<td>collection（集合）</td>
+</tr>
+<tr>
+<td>row（行）</td>
+<td>document（文档）</td>
+</tr>
+<tr>
+<td>column（列）</td>
+<td>field（字段）</td>
+</tr>
+<tr>
+<td>index</td>
+<td>index</td>
+</tr>
+<tr>
+<td>table joins（表连接）</td>
+<td>（嵌套文档）</td>
+</tr>
+<tr>
+<td>primary key</td>
+<td>primary key</td>
+</tr>
+</tbody></table>
+<h4 id="通过Shell操作MongoDB"><a href="#通过Shell操作MongoDB" class="headerlink" title="通过Shell操作MongoDB"></a>通过Shell操作MongoDB</h4><ol start="0">
+<li><p>启动命令行工具，进入交互式环境。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongo</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>说明</strong>：</p>
+</blockquote>
+</li>
+<li><p>查看、创建和删除数据库。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment">// 显示所有数据库</span></span><br><span class="line">&gt; show dbs</span><br><span class="line">admin   <span class="number">0.</span>000GB</span><br><span class="line">config  <span class="number">0.</span>000GB</span><br><span class="line">local   <span class="number">0.</span>000GB</span><br><span class="line">&gt; <span class="comment">// 创建并切换到school数据库</span></span><br><span class="line">&gt; use school</span><br><span class="line">switched to db school</span><br><span class="line">&gt; <span class="comment">// 删除当前数据库</span></span><br><span class="line">&gt; db.dropDatabase()</span><br><span class="line">&#123; <span class="string">&quot;ok&quot;</span> : <span class="number">1</span> &#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>创建、删除和查看集合。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment">// 创建并切换到school数据库</span></span><br><span class="line">&gt; use school</span><br><span class="line">switched to db school</span><br><span class="line">&gt; <span class="comment">// 创建colleges集合</span></span><br><span class="line">&gt; db.createCollection(<span class="string">&#x27;colleges&#x27;</span>)</span><br><span class="line">&#123; <span class="string">&quot;ok&quot;</span> : <span class="number">1</span> &#125;</span><br><span class="line">&gt; <span class="comment">// 创建students集合</span></span><br><span class="line">&gt; db.createCollection(<span class="string">&#x27;students&#x27;</span>)</span><br><span class="line">&#123; <span class="string">&quot;ok&quot;</span> : <span class="number">1</span> &#125;</span><br><span class="line">&gt; <span class="comment">// 查看所有集合</span></span><br><span class="line">&gt; show collections</span><br><span class="line">colleges</span><br><span class="line">students</span><br><span class="line">&gt; <span class="comment">// 删除colleges集合</span></span><br><span class="line">&gt; db.colleges.drop()</span><br><span class="line"><span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>说明</strong>：在MongoDB中插入文档时如果集合不存在会自动创建集合，所以也可以按照下面的方式通过插入文档来创建集合。</p>
+</blockquote>
+</li>
+<li><p>文档的CRUD操作。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment">// 向students集合插入文档</span></span><br><span class="line">&gt; db.students.insert(&#123;<span class="attr">stuid</span>: <span class="number">1001</span>, <span class="attr">name</span>: <span class="string">&#x27;骆昊&#x27;</span>, <span class="attr">age</span>: <span class="number">40</span>&#125;)</span><br><span class="line">WriteResult(&#123; <span class="string">&quot;nInserted&quot;</span> : <span class="number">1</span> &#125;)</span><br><span class="line">&gt; <span class="comment">// 向students集合插入文档</span></span><br><span class="line">&gt; db.students.save(&#123;<span class="attr">stuid</span>: <span class="number">1002</span>, <span class="attr">name</span>: <span class="string">&#x27;王大锤&#x27;</span>, <span class="attr">tel</span>: <span class="string">&#x27;13012345678&#x27;</span>, <span class="attr">gender</span>: <span class="string">&#x27;男&#x27;</span>&#125;)</span><br><span class="line">WriteResult(&#123; <span class="string">&quot;nInserted&quot;</span> : <span class="number">1</span> &#125;)</span><br><span class="line">&gt; <span class="comment">// 查看所有文档</span></span><br><span class="line">&gt; db.students.find()</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;5b13c72e006ad854460ee70b&quot;</span>), <span class="string">&quot;stuid&quot;</span> : <span class="number">1001</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;骆昊&quot;</span>, <span class="string">&quot;age&quot;</span> : <span class="number">38</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;5b13c790006ad854460ee70c&quot;</span>), <span class="string">&quot;stuid&quot;</span> : <span class="number">1002</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;王大锤&quot;</span>, <span class="string">&quot;tel&quot;</span> : <span class="string">&quot;13012345678&quot;</span>, <span class="string">&quot;gender&quot;</span> : <span class="string">&quot;男&quot;</span> &#125;</span><br><span class="line">&gt; <span class="comment">// 更新stuid为1001的文档</span></span><br><span class="line">&gt; db.students.update(&#123;<span class="attr">stuid</span>: <span class="number">1001</span>&#125;, &#123;<span class="string">&#x27;$set&#x27;</span>: &#123;<span class="attr">tel</span>: <span class="string">&#x27;13566778899&#x27;</span>, <span class="attr">gender</span>: <span class="string">&#x27;男&#x27;</span>&#125;&#125;)</span><br><span class="line">WriteResult(&#123; <span class="string">&quot;nMatched&quot;</span> : <span class="number">1</span>, <span class="string">&quot;nUpserted&quot;</span> : <span class="number">0</span>, <span class="string">&quot;nModified&quot;</span> : <span class="number">1</span> &#125;)</span><br><span class="line">&gt; <span class="comment">// 插入或更新stuid为1003的文档</span></span><br><span class="line">&gt; db.students.update(&#123;<span class="attr">stuid</span>: <span class="number">1003</span>&#125;, &#123;<span class="string">&#x27;$set&#x27;</span>: &#123;<span class="attr">name</span>: <span class="string">&#x27;白元芳&#x27;</span>, <span class="attr">tel</span>: <span class="string">&#x27;13022223333&#x27;</span>, <span class="attr">gender</span>: <span class="string">&#x27;男&#x27;</span>&#125;&#125;,  upsert=<span class="literal">true</span>)</span><br><span class="line">WriteResult(&#123;</span><br><span class="line">        <span class="string">&quot;nMatched&quot;</span> : <span class="number">0</span>,</span><br><span class="line">        <span class="string">&quot;nUpserted&quot;</span> : <span class="number">1</span>,</span><br><span class="line">        <span class="string">&quot;nModified&quot;</span> : <span class="number">0</span>,</span><br><span class="line">        <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;5b13c92dd185894d7283efab&quot;</span>)</span><br><span class="line">&#125;)</span><br><span class="line">&gt; <span class="comment">// 查询所有文档</span></span><br><span class="line">&gt; db.students.find().pretty()</span><br><span class="line">&#123;</span><br><span class="line">        <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;5b13c72e006ad854460ee70b&quot;</span>),</span><br><span class="line">        <span class="string">&quot;stuid&quot;</span> : <span class="number">1001</span>,</span><br><span class="line">        <span class="string">&quot;name&quot;</span> : <span class="string">&quot;骆昊&quot;</span>,</span><br><span class="line">        <span class="string">&quot;age&quot;</span> : <span class="number">38</span>,</span><br><span class="line">        <span class="string">&quot;gender&quot;</span> : <span class="string">&quot;男&quot;</span>,</span><br><span class="line">        <span class="string">&quot;tel&quot;</span> : <span class="string">&quot;13566778899&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">        <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;5b13c790006ad854460ee70c&quot;</span>),</span><br><span class="line">        <span class="string">&quot;stuid&quot;</span> : <span class="number">1002</span>,</span><br><span class="line">        <span class="string">&quot;name&quot;</span> : <span class="string">&quot;王大锤&quot;</span>,</span><br><span class="line">        <span class="string">&quot;tel&quot;</span> : <span class="string">&quot;13012345678&quot;</span>,</span><br><span class="line">        <span class="string">&quot;gender&quot;</span> : <span class="string">&quot;男&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">        <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;5b13c92dd185894d7283efab&quot;</span>),</span><br><span class="line">        <span class="string">&quot;stuid&quot;</span> : <span class="number">1003</span>,</span><br><span class="line">        <span class="string">&quot;gender&quot;</span> : <span class="string">&quot;男&quot;</span>,</span><br><span class="line">        <span class="string">&quot;name&quot;</span> : <span class="string">&quot;白元芳&quot;</span>,</span><br><span class="line">        <span class="string">&quot;tel&quot;</span> : <span class="string">&quot;13022223333&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">&gt; <span class="comment">// 查询stuid大于1001的文档</span></span><br><span class="line">&gt; db.students.find(&#123;<span class="attr">stuid</span>: &#123;<span class="string">&#x27;$gt&#x27;</span>: <span class="number">1001</span>&#125;&#125;).pretty()</span><br><span class="line">&#123;</span><br><span class="line">        <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;5b13c790006ad854460ee70c&quot;</span>),</span><br><span class="line">        <span class="string">&quot;stuid&quot;</span> : <span class="number">1002</span>,</span><br><span class="line">        <span class="string">&quot;name&quot;</span> : <span class="string">&quot;王大锤&quot;</span>,</span><br><span class="line">        <span class="string">&quot;tel&quot;</span> : <span class="string">&quot;13012345678&quot;</span>,</span><br><span class="line">        <span class="string">&quot;gender&quot;</span> : <span class="string">&quot;男&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">        <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;5b13c92dd185894d7283efab&quot;</span>),</span><br><span class="line">        <span class="string">&quot;stuid&quot;</span> : <span class="number">1003</span>,</span><br><span class="line">        <span class="string">&quot;gender&quot;</span> : <span class="string">&quot;男&quot;</span>,</span><br><span class="line">        <span class="string">&quot;name&quot;</span> : <span class="string">&quot;白元芳&quot;</span>,</span><br><span class="line">        <span class="string">&quot;tel&quot;</span> : <span class="string">&quot;13022223333&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">&gt; <span class="comment">// 查询stuid大于1001的文档只显示name和tel字段</span></span><br><span class="line">&gt; db.students.find(&#123;<span class="attr">stuid</span>: &#123;<span class="string">&#x27;$gt&#x27;</span>: <span class="number">1001</span>&#125;&#125;, &#123;<span class="attr">_id</span>: <span class="number">0</span>, <span class="attr">name</span>: <span class="number">1</span>, <span class="attr">tel</span>: <span class="number">1</span>&#125;).pretty()</span><br><span class="line">&#123; <span class="string">&quot;name&quot;</span> : <span class="string">&quot;王大锤&quot;</span>, <span class="string">&quot;tel&quot;</span> : <span class="string">&quot;13012345678&quot;</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;name&quot;</span> : <span class="string">&quot;白元芳&quot;</span>, <span class="string">&quot;tel&quot;</span> : <span class="string">&quot;13022223333&quot;</span> &#125;</span><br><span class="line">&gt; <span class="comment">// 查询name为“骆昊”或者tel为“13022223333”的文档</span></span><br><span class="line">&gt; db.students.find(&#123;<span class="string">&#x27;$or&#x27;</span>: [&#123;<span class="attr">name</span>: <span class="string">&#x27;骆昊&#x27;</span>&#125;, &#123;<span class="attr">tel</span>: <span class="string">&#x27;13022223333&#x27;</span>&#125;]&#125;, &#123;<span class="attr">_id</span>: <span class="number">0</span>, <span class="attr">name</span>: <span class="number">1</span>, <span class="attr">tel</span>: <span class="number">1</span>&#125;).pretty()</span><br><span class="line">&#123; <span class="string">&quot;name&quot;</span> : <span class="string">&quot;骆昊&quot;</span>, <span class="string">&quot;tel&quot;</span> : <span class="string">&quot;13566778899&quot;</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;name&quot;</span> : <span class="string">&quot;白元芳&quot;</span>, <span class="string">&quot;tel&quot;</span> : <span class="string">&quot;13022223333&quot;</span> &#125;</span><br><span class="line">&gt; <span class="comment">// 查询学生文档跳过第1条文档只查1条文档</span></span><br><span class="line">&gt; db.students.find().skip(<span class="number">1</span>).limit(<span class="number">1</span>).pretty()</span><br><span class="line">&#123;</span><br><span class="line">        <span class="string">&quot;_id&quot;</span> : ObjectId(<span class="string">&quot;5b13c790006ad854460ee70c&quot;</span>),</span><br><span class="line">        <span class="string">&quot;stuid&quot;</span> : <span class="number">1002</span>,</span><br><span class="line">        <span class="string">&quot;name&quot;</span> : <span class="string">&quot;王大锤&quot;</span>,</span><br><span class="line">        <span class="string">&quot;tel&quot;</span> : <span class="string">&quot;13012345678&quot;</span>,</span><br><span class="line">        <span class="string">&quot;gender&quot;</span> : <span class="string">&quot;男&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">&gt; <span class="comment">// 对查询结果进行排序(1表示升序，-1表示降序)</span></span><br><span class="line">&gt; db.students.find(&#123;&#125;, &#123;<span class="attr">_id</span>: <span class="number">0</span>, <span class="attr">stuid</span>: <span class="number">1</span>, <span class="attr">name</span>: <span class="number">1</span>&#125;).sort(&#123;<span class="attr">stuid</span>: -<span class="number">1</span>&#125;)</span><br><span class="line">&#123; <span class="string">&quot;stuid&quot;</span> : <span class="number">1003</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;白元芳&quot;</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;stuid&quot;</span> : <span class="number">1002</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;王大锤&quot;</span> &#125;</span><br><span class="line">&#123; <span class="string">&quot;stuid&quot;</span> : <span class="number">1001</span>, <span class="string">&quot;name&quot;</span> : <span class="string">&quot;骆昊&quot;</span> &#125;</span><br><span class="line">&gt; <span class="comment">// 在指定的一个或多个字段上创建索引</span></span><br><span class="line">&gt; db.students.ensureIndex(&#123;<span class="attr">name</span>: <span class="number">1</span>&#125;)</span><br><span class="line">&#123;</span><br><span class="line">        <span class="string">&quot;createdCollectionAutomatically&quot;</span> : <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;numIndexesBefore&quot;</span> : <span class="number">1</span>,</span><br><span class="line">        <span class="string">&quot;numIndexesAfter&quot;</span> : <span class="number">2</span>,</span><br><span class="line">        <span class="string">&quot;ok&quot;</span> : <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用MongoDB可以非常方便的配置数据复制，通过冗余数据来实现数据的高可用以及灾难恢复，也可以通过数据分片来应对数据量迅速增长的需求。关于MongoDB更多的操作可以查阅<a target="_blank" rel="noopener" href="https://mongodb-documentation.readthedocs.io/en/latest/">官方文档</a> ，同时推荐大家阅读Kristina Chodorow写的<a target="_blank" rel="noopener" href="http://www.ituring.com.cn/book/1172">《MongoDB权威指南》</a>。</p>
+</li>
+</ol>
+<h4 id="在Python程序中操作MongoDB"><a href="#在Python程序中操作MongoDB" class="headerlink" title="在Python程序中操作MongoDB"></a>在Python程序中操作MongoDB</h4><p>可以通过pip安装<code>pymongo</code>来实现对MongoDB的操作。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pymongo</span><br></pre></td></tr></table></figure>
+<p>进入Python交互式环境，就可以执行以下的操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> pymongo <span class="keyword">import</span> MongoClient</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>client = MongoClient(<span class="string">&#x27;mongodb://127.0.0.1:27017&#x27;</span>) </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db = client.school</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> student <span class="keyword">in</span> db.students.find():</span><br><span class="line"><span class="meta">... </span>    print(<span class="string">&#x27;学号:&#x27;</span>, student[<span class="string">&#x27;stuid&#x27;</span>])</span><br><span class="line"><span class="meta">... </span>    print(<span class="string">&#x27;姓名:&#x27;</span>, student[<span class="string">&#x27;name&#x27;</span>])</span><br><span class="line"><span class="meta">... </span>    print(<span class="string">&#x27;电话:&#x27;</span>, student[<span class="string">&#x27;tel&#x27;</span>])</span><br><span class="line"><span class="meta">... </span></span><br><span class="line">学号: <span class="number">1001.0</span></span><br><span class="line">姓名: 骆昊</span><br><span class="line">电话: <span class="number">13566778899</span></span><br><span class="line">学号: <span class="number">1002.0</span></span><br><span class="line">姓名: 王大锤</span><br><span class="line">电话: <span class="number">13012345678</span></span><br><span class="line">学号: <span class="number">1003.0</span></span><br><span class="line">姓名: 白元芳</span><br><span class="line">电话: <span class="number">13022223333</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.students.find().count()</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.students.remove()</span><br><span class="line">&#123;<span class="string">&#x27;n&#x27;</span>: <span class="number">3</span>, <span class="string">&#x27;ok&#x27;</span>: <span class="number">1.0</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.students.find().count()</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> pymongo <span class="keyword">import</span> ASCENDING</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>coll = db.students</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>coll.create_index([(<span class="string">&#x27;name&#x27;</span>, ASCENDING)], unique=<span class="literal">True</span>)</span><br><span class="line"><span class="string">&#x27;name_1&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>coll.insert_one(&#123;<span class="string">&#x27;stuid&#x27;</span>: <span class="built_in">int</span>(<span class="number">1001</span>), <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;骆昊&#x27;</span>, <span class="string">&#x27;gender&#x27;</span>: <span class="literal">True</span>&#125;)</span><br><span class="line">&lt;pymongo.results.InsertOneResult <span class="built_in">object</span> at <span class="number">0x1050cc6c8</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>coll.insert_many([&#123;<span class="string">&#x27;stuid&#x27;</span>: <span class="built_in">int</span>(<span class="number">1002</span>), <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;王大锤&#x27;</span>, <span class="string">&#x27;gender&#x27;</span>: <span class="literal">False</span>&#125;, &#123;<span class="string">&#x27;stuid&#x27;</span>: <span class="built_in">int</span>(<span class="number">1003</span>), <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;白元芳&#x27;</span>, <span class="string">&#x27;gender&#x27;</span>: <span class="literal">True</span>&#125;])</span><br><span class="line">&lt;pymongo.results.InsertManyResult <span class="built_in">object</span> at <span class="number">0x1050cc8c8</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> student <span class="keyword">in</span> coll.find(&#123;<span class="string">&#x27;gender&#x27;</span>: <span class="literal">True</span>&#125;):</span><br><span class="line"><span class="meta">... </span>    print(<span class="string">&#x27;学号:&#x27;</span>, student[<span class="string">&#x27;stuid&#x27;</span>])</span><br><span class="line"><span class="meta">... </span>    print(<span class="string">&#x27;姓名:&#x27;</span>, student[<span class="string">&#x27;name&#x27;</span>])</span><br><span class="line"><span class="meta">... </span>    print(<span class="string">&#x27;性别:&#x27;</span>, <span class="string">&#x27;男&#x27;</span> <span class="keyword">if</span> student[<span class="string">&#x27;gender&#x27;</span>] <span class="keyword">else</span> <span class="string">&#x27;女&#x27;</span>)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line">学号: <span class="number">1001</span></span><br><span class="line">姓名: 骆昊</span><br><span class="line">性别: 男</span><br><span class="line">学号: <span class="number">1003</span></span><br><span class="line">姓名: 白元芳</span><br><span class="line">性别: 男</span><br></pre></td></tr></table></figure>
+<p>关于<a target="_blank" rel="noopener" href="https://api.mongodb.com/python/current/tutorial.html"><code>pymongo</code></a>更多的知识可以通过它的官方文档进行了解，也可以使用<a target="_blank" rel="noopener" href="https://pypi.org/project/mongoengine/"><code>MongoEngine</code></a>这样的库来简化Python程序对MongoDB的操作，除此之外，还有以异步I/O方式访问MongoDB的三方库<a target="_blank" rel="noopener" href="https://pypi.org/project/motor/"><code>motor</code></a>都是不错的选择。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>i0lcy
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://example.com/2021/02/14/python%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" title="python机器学习">http://example.com/2021/02/14/python机器学习/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/13/python%E7%88%AC%E8%99%AB%E5%B9%B6%E5%8F%91/" rel="prev" title="python爬虫并发">
+                  <i class="fa fa-chevron-left"></i> python爬虫并发
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">i0lcy</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"live2d-widget-model-wanko"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
